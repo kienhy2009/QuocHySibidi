@@ -166,6 +166,17 @@
             <div class="text-[10px] text-slate-500">
                 Powered by QuocHySibiđi Platform
             </div>
+            
+            <!-- Offline Version -->
+            <div class="mt-2 pt-3 border-t border-slate-800/50">
+                <div class="text-[10px] text-slate-400 mb-2 uppercase font-bold tracking-wider flex items-center justify-center gap-1.5">
+                    <i class="fa-solid fa-wifi text-slate-500"></i> Offline Version
+                </div>
+                <a href="QuocHySibidi.html" download="QuocHySibidi.html" class="flex items-center justify-center gap-2 w-full py-2 px-3 bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 text-xs font-semibold rounded-xl transition-all border border-emerald-500/20 shadow-inner group">
+                    <i class="fa-solid fa-download group-hover:-translate-y-0.5 transition-transform"></i> 
+                    Tải QuocHySibidi.html
+                </a>
+            </div>
         </div>
     </aside>
 
@@ -668,7 +679,6 @@
             }
         }
 
-        // ĐÃ THAY THẾ HÀM LƯU FILE CŨ BẰNG HÀM MỚI Ở ĐÂY
         async function exportVocab() {
             if (vocabData.length === 0) {
                 alert("Chưa có từ vựng nào để xuất file!");
