@@ -221,12 +221,13 @@
 
                     <!-- Action Controls toolbar -->
                     <div class="flex flex-wrap items-center gap-2.5">
-                        <select id="vocab-filter" class="bg-slate-900 border border-slate-700/80 text-slate-200 text-sm rounded-xl px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent cursor-pointer shadow-sm" onchange="renderVocab()">
-                            <option value="all">All Topics (Tất cả)</option>
-                            <option value="Arithmetic">Arithmetic (Số học)</option>
-                            <option value="Algebra">Algebra (Đại số)</option>
-                            <option value="Geometry">Geometry (Hình học)</option>
-                        </select>
+                        <!-- Nhập tên chủ đề trực tiếp để lọc -->
+                        <div class="relative min-w-[200px]">
+                            <input type="text" id="vocab-filter" placeholder="Lọc theo chủ đề..." 
+                                   class="w-full bg-slate-900 border border-slate-700/80 text-slate-200 text-sm rounded-xl pl-9 pr-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent shadow-sm placeholder:text-slate-500" 
+                                   oninput="renderVocab()">
+                            <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
+                        </div>
                         
                         <button onclick="toggleAddVocabModal()" class="bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-500 hover:to-blue-400 text-white font-semibold py-2.5 px-4 rounded-xl transition-all shadow-lg shadow-blue-500/20 flex items-center gap-2 text-sm">
                             <i class="fa-solid fa-plus text-xs"></i> Thêm từ
@@ -468,19 +469,22 @@
         // --- VOCABULARY TAB LOGIC ---
         function renderVocab() {
             const container = document.getElementById('vocab-container');
-            const filter = document.getElementById('vocab-filter').value;
+            const filterInput = document.getElementById('vocab-filter').value.trim().toLowerCase();
             
             container.innerHTML = '';
             
-            const filteredData = filter === 'all' ? vocabData : vocabData.filter(v => v.topic === filter);
+            // Lọc danh sách từ vựng theo chuỗi từ khóa chủ đề người dùng nhập
+            const filteredData = filterInput === '' 
+                ? vocabData 
+                : vocabData.filter(v => v.topic && v.topic.toLowerCase().includes(filterInput));
             
             if (filteredData.length === 0) {
                 container.innerHTML = `<div class="col-span-full text-center text-slate-400 py-16 px-4 bg-slate-900/60 rounded-2xl border border-dashed border-slate-800">
                     <div class="w-16 h-16 mx-auto rounded-2xl bg-slate-800/60 flex items-center justify-center text-slate-500 mb-4 text-2xl">
                         <i class="fa-solid fa-folder-open"></i>
                     </div>
-                    <p class="text-lg font-bold text-slate-200">Chưa có từ vựng nào</p>
-                    <p class="text-xs text-slate-400 mt-1">Vui lòng nhấn "Thêm từ" hoặc "Nhập file" JSON để bắt đầu học tập.</p>
+                    <p class="text-lg font-bold text-slate-200">Không tìm thấy từ vựng nào</p>
+                    <p class="text-xs text-slate-400 mt-1">Vui lòng thử tìm với tên chủ đề khác, thêm từ mới hoặc nhập từ file JSON.</p>
                 </div>`;
                 return;
             }
