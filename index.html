@@ -668,20 +668,52 @@
             }
         }
 
-        function exportVocab() {
+        // ĐÃ THAY THẾ HÀM LƯU FILE CŨ BẰNG HÀM MỚI Ở ĐÂY
+        async function exportVocab() {
             if (vocabData.length === 0) {
                 alert("Chưa có từ vựng nào để xuất file!");
                 return;
             }
+
             const dataStr = JSON.stringify(vocabData, null, 4);
+
+            // Cách 1: Sử dụng File System Access API
+            if ('showSaveFilePicker' in window) {
+                try {
+                    const handle = await window.showSaveFilePicker({
+                        suggestedName: 'mathematics_vocabulary.json',
+                        types: [{
+                            description: 'File JSON',
+                            accept: { 'application/json': ['.json'] }
+                        }]
+                    });
+                    const writable = await handle.createWritable();
+                    await writable.write(dataStr);
+                    await writable.close();
+                    return;
+                } catch (err) {
+                    if (err.name === 'AbortError') return;
+                    console.warn("Lỗi File System Access API, chuyển sang phương pháp dự phòng:", err);
+                }
+            }
+
+            // Cách 2: Phương pháp dự phòng
+            let fileName = prompt("Nhập tên file bạn muốn lưu:", "mathematics_vocabulary.json");
+            if (!fileName) return; 
+
+            if (!fileName.toLowerCase().endsWith('.json')) {
+                fileName += '.json';
+            }
+
             const blob = new Blob([dataStr], { type: "application/json" });
             const url = URL.createObjectURL(blob);
             const link = document.createElement("a");
             link.href = url;
-            link.download = "mathematics_vocabulary.json";
+            link.download = fileName;
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
+            URL.revokeObjectURL(url);
         }
 
         function importVocab(event) {
