@@ -1,0 +1,974 @@
+<!DOCTYPE html>
+<html lang="vi" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QuocHySibiđi - Học Toán Tiếng Anh</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#f0f7ff',
+                            100: '#e0effe',
+                            500: '#3b82f6',
+                            600: '#2563eb',
+                            700: '#1d4ed8',
+                            900: '#1e3a8a',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- KaTeX for LaTeX rendering -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #030712;
+            color: #f3f4f6;
+        }
+        
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .tab-content.active {
+            display: block;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(12px) scale(0.99); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        /* Custom Dark Scrollbar */
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: #0b0f19; }
+        ::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 9999px; border: 2px solid #0b0f19; }
+        ::-webkit-scrollbar-thumb:hover { background: #334155; }
+
+        /* Hide default number input arrows */
+        input[type=number]::-webkit-inner-spin-button, 
+        input[type=number]::-webkit-outer-spin-button { 
+            -webkit-appearance: none; 
+            margin: 0; 
+        }
+        input[type=number] {
+            -moz-appearance: textfield;
+        }
+
+        /* Glassmorphism utility */
+        .glass-panel {
+            background: rgba(15, 23, 42, 0.75);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .glass-panel-glow {
+            background: rgba(15, 23, 42, 0.85);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(59, 130, 246, 0.2);
+            box-shadow: 0 0 25px -5px rgba(59, 130, 246, 0.15);
+        }
+
+        /* Glowing accents */
+        .glow-text-blue {
+            text-shadow: 0 0 12px rgba(59, 130, 246, 0.6);
+        }
+        .glow-text-cyan {
+            text-shadow: 0 0 12px rgba(6, 182, 212, 0.6);
+        }
+    </style>
+</head>
+<body class="bg-slate-950 text-slate-100 h-screen flex overflow-hidden antialiased">
+
+    <!-- Sidebar Navigation -->
+    <aside class="w-72 bg-slate-900/90 border-r border-slate-800/80 text-white flex flex-col shadow-2xl z-20 transition-transform duration-300 md:relative absolute h-full backdrop-blur-xl" id="sidebar">
+        <!-- Sidebar Header with Logo -->
+        <div class="p-5 border-b border-slate-800/80 flex flex-col gap-3">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                    <img src="logo.jpg" 
+                         alt="QuocHySibiđi Logo" 
+                         class="w-10 h-10 rounded-xl object-cover ring-2 ring-blue-500/50 shadow-lg shadow-blue-500/20"
+                         onerror="this.onerror=null; this.src='https://placehold.co/100x100/1e293b/3b82f6?text=QH';">
+                    <div>
+                        <h1 class="text-xl font-extrabold tracking-tight text-white flex items-center gap-1">
+                            Quoc<span class="text-blue-500 glow-text-blue">Hy</span>Sibiđi
+                        </h1>
+                        <span class="text-[10px] uppercase font-bold tracking-widest px-2 py-0.5 rounded-full bg-blue-500/10 text-blue-400 border border-blue-500/20 inline-block">
+                            Math Edition
+                        </span>
+                    </div>
+                </div>
+                <button class="md:hidden text-slate-400 hover:text-white transition-colors" onclick="toggleSidebar()">
+                    <i class="fa-solid fa-xmark text-xl"></i>
+                </button>
+            </div>
+            
+            <!-- Slogan Badge -->
+            <div class="p-2.5 rounded-xl bg-slate-950/60 border border-slate-800/80 text-[11px] font-medium text-slate-300 text-center flex items-center justify-center gap-1.5 shadow-inner">
+                <span class="text-blue-400 font-bold">Toàn Quốc</span>
+                <i class="fa-solid fa-arrow-right text-[9px] text-slate-500"></i>
+                <span class="text-cyan-400 font-bold">Kiến Hy</span>
+                <i class="fa-solid fa-arrow-right text-[9px] text-slate-500"></i>
+                <span class="text-indigo-400 font-bold">Siêu</span>
+                <i class="fa-solid fa-arrow-right text-[9px] text-slate-500"></i>
+                <span class="text-emerald-400 font-bold">bị đỉnh</span>
+            </div>
+        </div>
+        
+        <!-- Navigation Menu -->
+        <nav class="flex-1 px-3 space-y-2 mt-4">
+            <button onclick="switchTab('vocab')" id="btn-vocab" class="w-full flex items-center gap-3.5 px-4 py-3.5 rounded-xl bg-gradient-to-r from-blue-600 to-cyan-600 text-white font-semibold transition-all shadow-lg shadow-blue-600/20 text-left">
+                <div class="w-8 h-8 rounded-lg bg-white/10 flex items-center justify-center">
+                    <i class="fa-solid fa-book-bookmark text-base"></i>
+                </div>
+                <div class="flex-1">
+                    <div class="text-sm">Vocabulary</div>
+                    <div class="text-[11px] font-normal text-blue-100/70">Từ vựng Toán Tiếng Anh</div>
+                </div>
+            </button>
+            
+            <button onclick="switchTab('practice')" id="btn-practice" class="w-full flex items-center gap-3.5 px-4 py-3.5 rounded-xl hover:bg-slate-800/80 text-slate-300 hover:text-white font-medium transition-all text-left">
+                <div class="w-8 h-8 rounded-lg bg-slate-800/80 flex items-center justify-center">
+                    <i class="fa-solid fa-pen-ruler text-base"></i>
+                </div>
+                <div class="flex-1">
+                    <div class="text-sm">Practice</div>
+                    <div class="text-[11px] font-normal text-slate-400">Luyện tập giải đề JSON</div>
+                </div>
+            </button>
+        </nav>
+        
+        <!-- Sidebar Footer -->
+        <div class="p-4 border-t border-slate-800/80 text-xs text-slate-400 text-center flex flex-col gap-2">
+            <div class="flex items-center justify-center gap-2 text-slate-300 font-medium">
+                <i class="fa-solid fa-graduation-cap text-blue-400"></i> Designed for VN Students
+            </div>
+            <div class="text-[10px] text-slate-500">
+                Powered by QuocHySibiđi Platform
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="flex-1 flex flex-col h-full overflow-hidden relative bg-slate-950">
+        
+        <!-- Top Sticky Header -->
+        <header class="bg-slate-900/80 backdrop-blur-md border-b border-slate-800/80 px-6 py-3 flex justify-between items-center z-10">
+            <div class="flex items-center gap-3">
+                <button onclick="toggleSidebar()" class="md:hidden p-2 text-slate-400 hover:text-white rounded-lg hover:bg-slate-800">
+                    <i class="fa-solid fa-bars text-xl"></i>
+                </button>
+                <div class="flex items-center gap-2">
+                    <img src="logo.jpg" 
+                         alt="Logo" class="w-8 h-8 rounded-lg object-cover ring-1 ring-blue-500/40 md:hidden"
+                         onerror="this.onerror=null; this.style.display='none';">
+                    <h2 class="text-lg font-extrabold text-white">
+                        Quoc<span class="text-blue-500">Hy</span>Sibiđi
+                    </h2>
+                </div>
+            </div>
+
+            <!-- Top Header Stats / Indicators -->
+            <div class="flex items-center gap-3">
+                <div class="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-800/80 border border-slate-700/60 text-xs text-slate-300">
+                    <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                    <span>Hệ thống sẵn sàng</span>
+                </div>
+                <div class="px-3 py-1.5 rounded-xl bg-blue-500/10 border border-blue-500/20 text-blue-400 text-xs font-semibold flex items-center gap-1.5">
+                    <i class="fa-solid fa-moon"></i> Dark Mode
+                </div>
+            </div>
+        </header>
+
+        <!-- Dynamic Content Body -->
+        <div class="flex-1 overflow-y-auto p-4 md:p-8">
+            
+            <!-- Tab 1: Vocabulary -->
+            <section id="tab-vocab" class="tab-content active max-w-7xl mx-auto space-y-6">
+                <!-- Header Banner -->
+                <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4 p-6 rounded-2xl glass-panel border border-slate-800">
+                    <div>
+                        <div class="flex items-center gap-2 text-blue-400 text-xs font-bold uppercase tracking-wider mb-1">
+                            <i class="fa-solid fa-book-open"></i> Vocabulary Database
+                        </div>
+                        <h2 class="text-2xl md:text-3xl font-extrabold text-white tracking-tight">
+                            Mathematics Vocabulary
+                        </h2>
+                        <p class="text-slate-400 text-sm mt-1">
+                            Tra cứu, quản lý và ghi nhớ thuật ngữ Toán học Tiếng Anh dễ dàng
+                        </p>
+                    </div>
+
+                    <!-- Action Controls toolbar -->
+                    <div class="flex flex-wrap items-center gap-2.5">
+                        <!-- Nhập tên chủ đề trực tiếp để lọc -->
+                        <div class="relative min-w-[200px]">
+                            <input type="text" id="vocab-filter" placeholder="Lọc theo chủ đề..." 
+                                   class="w-full bg-slate-900 border border-slate-700/80 text-slate-200 text-sm rounded-xl pl-9 pr-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent shadow-sm placeholder:text-slate-500" 
+                                   oninput="renderVocab()">
+                            <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
+                        </div>
+                        
+                        <button onclick="toggleAddVocabModal()" class="bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-500 hover:to-blue-400 text-white font-semibold py-2.5 px-4 rounded-xl transition-all shadow-lg shadow-blue-500/20 flex items-center gap-2 text-sm">
+                            <i class="fa-solid fa-plus text-xs"></i> Thêm từ
+                        </button>
+                        
+                        <button onclick="exportVocab()" class="bg-slate-800 hover:bg-slate-700 text-emerald-400 border border-emerald-500/30 font-semibold py-2.5 px-4 rounded-xl transition-all flex items-center gap-2 text-sm">
+                            <i class="fa-solid fa-file-export text-xs"></i> Lưu file
+                        </button>
+                        
+                        <label class="bg-slate-800 hover:bg-slate-700 text-amber-400 border border-amber-500/30 font-semibold py-2.5 px-4 rounded-xl transition-all flex items-center gap-2 text-sm cursor-pointer mb-0">
+                            <i class="fa-solid fa-file-import text-xs"></i> Nhập file
+                            <input type="file" id="import-file" accept=".json" class="hidden" onchange="importVocab(event)">
+                        </label>
+                    </div>
+                </div>
+                
+                <!-- Khu vực thêm từ vựng mới bằng JSON -->
+                <div id="add-vocab-area" class="hidden glass-panel-glow p-6 rounded-2xl border border-blue-500/30 transition-all">
+                    <div class="flex items-center justify-between mb-3">
+                        <h3 class="text-lg font-bold text-blue-400 flex items-center gap-2">
+                            <i class="fa-solid fa-code"></i> Thêm từ vựng bằng JSON
+                        </h3>
+                        <span class="text-xs text-slate-400 bg-slate-900 px-2.5 py-1 rounded-lg border border-slate-800">Format Standard JSON</span>
+                    </div>
+                    <p class="text-xs text-slate-400 mb-4">Nhập hoặc dán cấu trúc JSON dưới đây để thêm từ mới. Phần công thức toán học hỗ trợ LaTeX.</p>
+                    <textarea id="json-input" class="w-full h-56 font-mono text-xs bg-slate-950 text-cyan-300 border border-slate-800 rounded-xl p-4 focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-inner" spellcheck="false"></textarea>
+                    <div class="flex justify-end gap-3 mt-4">
+                        <button onclick="toggleAddVocabModal()" class="px-4 py-2.5 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-xl transition-colors text-sm font-medium">
+                            Hủy bỏ
+                        </button>
+                        <button onclick="submitJsonVocab()" class="px-5 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl transition-all text-sm font-semibold shadow-lg shadow-emerald-600/20">
+                            <i class="fa-solid fa-check mr-1.5"></i> Lưu từ vựng
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Khu vực chỉnh sửa từ vựng bằng JSON -->
+                <div id="edit-vocab-area" class="hidden glass-panel-glow p-6 rounded-2xl border border-amber-500/30 transition-all">
+                    <div class="flex items-center justify-between mb-3">
+                        <h3 class="text-lg font-bold text-amber-400 flex items-center gap-2">
+                            <i class="fa-solid fa-pen-to-square"></i> Chỉnh sửa JSON từ vựng
+                        </h3>
+                        <span class="text-xs text-slate-400 bg-slate-900 px-2.5 py-1 rounded-lg border border-slate-800">Edit Mode</span>
+                    </div>
+                    <p class="text-xs text-slate-400 mb-4">Chỉnh sửa nội dung JSON bên dưới và nhấn Cập nhật.</p>
+                    <textarea id="edit-json-input" class="w-full h-56 font-mono text-xs bg-slate-950 text-amber-300 border border-slate-800 rounded-xl p-4 focus:outline-none focus:ring-2 focus:ring-amber-500 shadow-inner" spellcheck="false"></textarea>
+                    <div class="flex justify-end gap-3 mt-4">
+                        <button onclick="cancelEditVocab()" class="px-4 py-2.5 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-xl transition-colors text-sm font-medium">
+                            Hủy bỏ
+                        </button>
+                        <button onclick="submitEditVocab()" class="px-5 py-2.5 bg-amber-600 hover:bg-amber-500 text-white rounded-xl transition-all text-sm font-semibold shadow-lg shadow-amber-600/20">
+                            <i class="fa-solid fa-rotate mr-1.5"></i> Cập nhật
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Vocabulary Cards Grid -->
+                <div id="vocab-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+                    <!-- Vocab cards generated by JS -->
+                </div>
+            </section>
+
+            <!-- Tab 2: Practice -->
+            <section id="tab-practice" class="tab-content max-w-4xl mx-auto space-y-6">
+                <!-- Section Header -->
+                <div class="p-6 rounded-2xl glass-panel border border-slate-800">
+                    <div class="flex items-center gap-2 text-cyan-400 text-xs font-bold uppercase tracking-wider mb-1">
+                        <i class="fa-solid fa-vial-circle-check"></i> Examination Center
+                    </div>
+                    <h2 class="text-2xl md:text-3xl font-extrabold text-white tracking-tight">
+                        Practice Session
+                    </h2>
+                    <p class="text-slate-400 text-sm mt-1">
+                        Luyện giải bài tập Toán Tiếng Anh tương tác thông qua file cấu trúc JSON
+                    </p>
+                </div>
+
+                <!-- Session Configuration (Import File) -->
+                <div id="practice-config" class="glass-panel rounded-2xl border border-slate-800 p-6 md:p-8 space-y-6">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-xl bg-blue-500/10 border border-blue-500/30 flex items-center justify-center text-blue-400">
+                            <i class="fa-solid fa-file-import text-lg"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-bold text-white">Nhập đề bài (File JSON)</h3>
+                            <p class="text-slate-400 text-xs">Tải lên đề thi được cấu hình sẵn để bắt đầu kiểm tra</p>
+                        </div>
+                    </div>
+                    
+                    <label class="block w-full border-2 border-dashed border-slate-700/80 hover:border-blue-500/60 rounded-2xl p-8 text-center cursor-pointer bg-slate-950/40 hover:bg-slate-900/60 transition-all group">
+                        <div class="w-14 h-14 mx-auto rounded-2xl bg-slate-800/80 group-hover:bg-blue-500/20 text-slate-400 group-hover:text-blue-400 flex items-center justify-center text-2xl transition-all mb-3">
+                            <i class="fa-solid fa-cloud-arrow-up"></i>
+                        </div>
+                        <span class="block text-slate-200 font-semibold text-base mb-1">Nhấn vào đây để chọn file JSON đề thi</span>
+                        <span class="text-slate-400 text-xs">Hỗ trợ định dạng file chuẩn .json</span>
+                        <input type="file" id="quiz-file" accept=".json" class="hidden" onchange="loadQuizFile(event)">
+                    </label>
+
+                    <!-- Quiz Metadata Preview (Hidden until loaded) -->
+                    <div id="quiz-info" class="hidden p-5 bg-slate-950/80 border border-blue-500/30 rounded-2xl text-slate-200 shadow-inner">
+                        <!-- Filled by JS -->
+                    </div>
+
+                    <button id="btn-start-quiz" onclick="startPractice()" class="hidden w-full bg-gradient-to-r from-blue-600 via-cyan-600 to-teal-500 hover:from-blue-500 hover:to-teal-400 text-white font-bold py-4 px-6 rounded-xl transition-all text-lg shadow-xl shadow-blue-600/20 items-center justify-center gap-3">
+                        <i class="fa-solid fa-play"></i> Bắt đầu làm bài
+                    </button>
+
+                    <!-- Toggle Sample Format Info -->
+                    <div class="pt-2">
+                        <button onclick="toggleJsonFormatInfo()" class="text-xs text-blue-400 hover:text-blue-300 font-medium inline-flex items-center gap-1.5 transition-colors">
+                            <i class="fa-solid fa-circle-info"></i> Xem cấu trúc file JSON mẫu
+                        </button>
+                        <div id="json-format-info" class="hidden mt-3 p-4 bg-slate-950 border border-slate-800 rounded-xl font-mono text-xs text-cyan-300 overflow-x-auto">
+<pre>{
+  "chu_de": "Toán Cơ Bản (Basic Math)",
+  "thoi_gian": 5,
+  "so_cau_hoi": 2,
+  "cau_hoi": [
+    {
+      "cau_hoi": "What is the addition of 5 and 7?",
+      "ket_qua": 12
+    },
+    {
+      "cau_hoi": "Solve for x: x - 3 = 10",
+      "ket_qua": 13
+    }
+  ]
+}</pre>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Active Problem Area -->
+                <div id="problem-area" class="hidden glass-panel rounded-2xl border border-blue-500/30 overflow-hidden shadow-2xl">
+                    <!-- Quiz Top Bar with Timer -->
+                    <div class="bg-slate-900/90 px-6 py-4 border-b border-slate-800 flex justify-between items-center sticky top-0 z-10">
+                        <span id="quiz-topic-badge" class="px-3.5 py-1.5 bg-blue-500/10 text-blue-400 border border-blue-500/20 rounded-full text-xs font-bold tracking-wide"></span>
+                        <div id="prob-timer" class="text-cyan-400 font-mono text-base font-bold bg-slate-950 px-4 py-1.5 rounded-xl border border-slate-800 flex items-center gap-2">
+                            <i class="fa-regular fa-clock"></i> 00:00
+                        </div>
+                    </div>
+                    
+                    <form id="quiz-form" onsubmit="submitQuiz(event)">
+                        <div class="p-6 md:p-8 space-y-6 bg-slate-950/40" id="quiz-questions-container">
+                            <!-- Questions generated by JS -->
+                        </div>
+                        <div class="p-6 border-t border-slate-800 bg-slate-900/80">
+                            <button type="submit" class="w-full bg-gradient-to-r from-emerald-600 to-teal-500 hover:from-emerald-500 hover:to-teal-400 text-white font-bold py-3.5 px-6 rounded-xl transition-all text-lg shadow-xl shadow-emerald-600/20 flex justify-center items-center gap-2">
+                                Nộp bài <i class="fa-solid fa-paper-plane text-sm"></i>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+                
+                <!-- Feedback & Stats Area -->
+                <div id="feedback-area" class="hidden space-y-6">
+                    
+                    <!-- Bài làm đã chấm -->
+                    <div class="glass-panel p-6 md:p-8 rounded-2xl border border-slate-800">
+                        <h3 class="text-xl font-bold text-white mb-6 border-b border-slate-800 pb-3 flex items-center gap-2.5">
+                            <i class="fa-solid fa-list-check text-blue-400"></i> Bài làm đã chấm
+                        </h3>
+                        <div id="graded-questions-container" class="space-y-4">
+                            <!-- Graded content generated by JS -->
+                        </div>
+                    </div>
+
+                    <!-- Bảng thống kê bài làm -->
+                    <div class="glass-panel p-6 md:p-8 rounded-2xl border border-slate-800">
+                        <h3 class="text-xl font-bold text-white mb-6 border-b border-slate-800 pb-3 flex items-center gap-2.5">
+                            <i class="fa-solid fa-chart-pie text-cyan-400"></i> Bảng thống kê bài làm
+                        </h3>
+                        <div id="stats-table-container">
+                            <!-- Stats table generated by JS -->
+                        </div>
+                    </div>
+
+                    <button onclick="resetPractice()" class="w-full bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-500 hover:to-cyan-500 text-white font-bold py-4 px-8 rounded-xl transition-all text-lg shadow-xl shadow-blue-600/20 mb-10 flex justify-center items-center gap-2">
+                        <i class="fa-solid fa-rotate-right"></i> Làm bài khác
+                    </button>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <script>
+        // --- VÔ HIỆU HÓA TÍNH NĂNG TĂNG GIẢM SỐ KHl LĂN CHUỘT TRÊN INPUT NUMBER ---
+        document.addEventListener('wheel', function(e) {
+            if (document.activeElement && document.activeElement.type === 'number') {
+                e.preventDefault();
+            }
+        }, { passive: false });
+
+        // --- DATA & STATE ---
+        let vocabData = []; 
+        let editingIndex = -1; // Lưu vị trí index của từ vựng đang được sửa
+
+        // --- HÀM ĐỌC VĂN BẢN (Text-to-Speech) ---
+        function speakText(text) {
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.cancel();
+                const utterance = new SpeechSynthesisUtterance(text);
+                utterance.lang = 'en-US';
+                utterance.rate = 0.9;
+                window.speechSynthesis.speak(utterance);
+            } else {
+                alert("Trình duyệt của bạn không hỗ trợ tính năng đọc phát âm.");
+            }
+        }
+
+        // --- UI & TAB MANAGEMENT ---
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            sidebar.classList.toggle('-translate-x-full');
+        }
+
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+            
+            // Reset navigation button active states
+            const btnVocab = document.getElementById('btn-vocab');
+            const btnPractice = document.getElementById('btn-practice');
+            
+            btnVocab.className = "w-full flex items-center gap-3.5 px-4 py-3.5 rounded-xl hover:bg-slate-800/80 text-slate-300 hover:text-white font-medium transition-all text-left";
+            btnPractice.className = "w-full flex items-center gap-3.5 px-4 py-3.5 rounded-xl hover:bg-slate-800/80 text-slate-300 hover:text-white font-medium transition-all text-left";
+
+            document.getElementById(`tab-${tabId}`).classList.add('active');
+            
+            const activeBtn = document.getElementById(`btn-${tabId}`);
+            activeBtn.className = "w-full flex items-center gap-3.5 px-4 py-3.5 rounded-xl bg-gradient-to-r from-blue-600 to-cyan-600 text-white font-semibold transition-all shadow-lg shadow-blue-600/20 text-left";
+
+            if (window.innerWidth < 768) {
+                document.getElementById('sidebar').classList.add('-translate-x-full');
+            }
+
+            if (tabId === 'vocab') renderVocab();
+        }
+
+        // --- VOCABULARY TAB LOGIC ---
+        function renderVocab() {
+            const container = document.getElementById('vocab-container');
+            const filterInput = document.getElementById('vocab-filter').value.trim().toLowerCase();
+            
+            container.innerHTML = '';
+            
+            // Lọc danh sách từ vựng theo chuỗi từ khóa chủ đề người dùng nhập
+            const filteredData = filterInput === '' 
+                ? vocabData 
+                : vocabData.filter(v => v.topic && v.topic.toLowerCase().includes(filterInput));
+            
+            if (filteredData.length === 0) {
+                container.innerHTML = `<div class="col-span-full text-center text-slate-400 py-16 px-4 bg-slate-900/60 rounded-2xl border border-dashed border-slate-800">
+                    <div class="w-16 h-16 mx-auto rounded-2xl bg-slate-800/60 flex items-center justify-center text-slate-500 mb-4 text-2xl">
+                        <i class="fa-solid fa-folder-open"></i>
+                    </div>
+                    <p class="text-lg font-bold text-slate-200">Không tìm thấy từ vựng nào</p>
+                    <p class="text-xs text-slate-400 mt-1">Vui lòng thử tìm với tên chủ đề khác, thêm từ mới hoặc nhập từ file JSON.</p>
+                </div>`;
+                return;
+            }
+
+            filteredData.forEach(item => {
+                const originalIndex = vocabData.indexOf(item);
+
+                const card = document.createElement('div');
+                card.className = 'glass-panel p-5 rounded-2xl border border-slate-800/80 hover:border-slate-700 transition-all flex flex-col justify-between group';
+                
+                let latexHtml = '';
+                if (item.latex) {
+                    latexHtml = `<div class="my-3 py-2.5 px-3 bg-slate-950/80 rounded-xl border border-slate-800 text-center overflow-x-auto text-cyan-300 text-base">
+                                    ${katex.renderToString(item.latex, {throwOnError: false})}
+                                 </div>`;
+                }
+
+                let exampleHtml = '';
+                if (item.read_en || item.read_vn) {
+                    exampleHtml = `
+                        <div class="mt-3 text-xs bg-slate-950/60 p-3 rounded-xl border border-slate-800/80 space-y-1">
+                            <p class="text-slate-300 flex items-start gap-1.5">
+                                <strong class="text-blue-400 flex items-center gap-1 shrink-0"><i class="fa-solid fa-volume-high text-[10px]"></i> EN:</strong> 
+                                <span>${item.read_en}</span>
+                            </p>
+                            <p class="text-slate-300 flex items-start gap-1.5">
+                                <strong class="text-cyan-400 flex items-center gap-1 shrink-0"><i class="fa-solid fa-language text-[10px]"></i> VN:</strong> 
+                                <span>${item.read_vn}</span>
+                            </p>
+                        </div>
+                    `;
+                }
+
+                card.innerHTML = `
+                    <div>
+                        <div class="flex justify-between items-start mb-2 gap-2">
+                            <div class="flex items-center gap-2">
+                                <h3 class="text-xl font-extrabold text-blue-400 group-hover:text-cyan-300 transition-colors">${item.term_en}</h3>
+                                <button onclick="speakText('${item.term_en.replace(/'/g, "\\'")}')" class="text-slate-400 hover:text-blue-400 transition-colors w-7 h-7 flex items-center justify-center rounded-lg hover:bg-slate-800" title="Nghe phát âm">
+                                    <i class="fa-solid fa-volume-high text-xs"></i>
+                                </button>
+                            </div>
+                            <span class="text-[10px] font-bold px-2.5 py-1 bg-slate-800 text-slate-300 border border-slate-700/60 rounded-full shrink-0">${item.topic}</span>
+                        </div>
+                        <p class="text-sm font-semibold text-slate-200 mb-2">${item.term_vn}</p>
+                        ${latexHtml}
+                        ${exampleHtml}
+                    </div>
+                    
+                    <!-- Các nút hành động (Sửa / Xóa) -->
+                    <div class="flex gap-2 mt-4 pt-3.5 border-t border-slate-800/80">
+                        <button onclick="openEditVocab(${originalIndex})" class="flex-1 bg-amber-500/10 hover:bg-amber-500/20 text-amber-400 text-xs font-semibold py-2 rounded-xl transition-all border border-amber-500/20 flex items-center justify-center gap-1.5">
+                            <i class="fa-solid fa-pen text-[11px]"></i> Sửa JSON
+                        </button>
+                        <button onclick="deleteVocab(${originalIndex})" class="flex-1 bg-red-500/10 hover:bg-red-500/20 text-red-400 text-xs font-semibold py-2 rounded-xl transition-all border border-red-500/20 flex items-center justify-center gap-1.5">
+                            <i class="fa-solid fa-trash-can text-[11px]"></i> Xóa
+                        </button>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        // Cấu trúc mẫu khi thêm từ
+        const jsonTemplate = {
+            "ten_tieng_anh": "Integral",
+            "ten_tieng_viet": "Tích phân",
+            "chu_de": "Algebra",
+            "vi_du": {
+                "ki_hieu": "\\int_{a}^{b} x^2 \\,dx",
+                "doc_tieng_anh": "The integral from a to b of x squared dx",
+                "doc_tieng_viet": "Tích phân từ a đến b của x bình phương dx"
+            }
+        };
+
+        function toggleAddVocabModal() {
+            const addArea = document.getElementById('add-vocab-area');
+            const editArea = document.getElementById('edit-vocab-area');
+            
+            if (!editArea.classList.contains('hidden')) {
+                editArea.classList.add('hidden');
+            }
+
+            addArea.classList.toggle('hidden');
+            
+            if (!addArea.classList.contains('hidden')) {
+                const textarea = document.getElementById('json-input');
+                textarea.value = JSON.stringify(jsonTemplate, null, 4);
+                addArea.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+        }
+
+        // HÀM XÓA TỪ VỰNG
+        function deleteVocab(index) {
+            if(confirm("Bạn có chắc chắn muốn xóa từ vựng này không?")) {
+                vocabData.splice(index, 1);
+                renderVocab();
+            }
+        }
+
+        // HÀM MỞ KHUNG SỬA TỪ VỰNG
+        function openEditVocab(index) {
+            editingIndex = index;
+            const item = vocabData[index];
+            
+            const editTemplate = {
+                "ten_tieng_anh": item.term_en,
+                "ten_tieng_viet": item.term_vn,
+                "chu_de": item.topic,
+                "vi_du": {
+                    "ki_hieu": item.latex || "",
+                    "doc_tieng_anh": item.read_en || "",
+                    "doc_tieng_viet": item.read_vn || ""
+                }
+            };
+
+            document.getElementById('add-vocab-area').classList.add('hidden');
+            
+            const editArea = document.getElementById('edit-vocab-area');
+            editArea.classList.remove('hidden');
+            
+            const textarea = document.getElementById('edit-json-input');
+            textarea.value = JSON.stringify(editTemplate, null, 4);
+            
+            editArea.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+
+        function cancelEditVocab() {
+            document.getElementById('edit-vocab-area').classList.add('hidden');
+            editingIndex = -1;
+        }
+
+        // HÀM LƯU TỪ VỰNG KHI SỬA
+        function submitEditVocab() {
+            if(editingIndex === -1) return;
+            
+            const textarea = document.getElementById('edit-json-input');
+            try {
+                const updatedData = JSON.parse(textarea.value);
+                if (!updatedData.ten_tieng_anh || !updatedData.ten_tieng_viet) {
+                    throw new Error("JSON thiếu các trường bắt buộc (ten_tieng_anh, ten_tieng_viet).");
+                }
+                
+                vocabData[editingIndex] = {
+                    term_en: updatedData.ten_tieng_anh,
+                    term_vn: updatedData.ten_tieng_viet,
+                    topic: updatedData.chu_de || "Arithmetic",
+                    latex: updatedData.vi_du?.ki_hieu || "",
+                    read_en: updatedData.vi_du?.doc_tieng_anh || "",
+                    read_vn: updatedData.vi_du?.doc_tieng_viet || ""
+                };
+                
+                renderVocab();
+                cancelEditVocab();
+                alert("Cập nhật từ vựng thành công!");
+            } catch (error) {
+                alert("Lỗi cú pháp JSON: \n" + error.message);
+            }
+        }
+
+        function submitJsonVocab() {
+            const textarea = document.getElementById('json-input');
+            try {
+                const newData = JSON.parse(textarea.value);
+                if (!newData.ten_tieng_anh || !newData.ten_tieng_viet || !newData.vi_du) {
+                    throw new Error("JSON thiếu các trường bắt buộc (ten_tieng_anh, ten_tieng_viet, vi_du).");
+                }
+                vocabData.unshift({
+                    term_en: newData.ten_tieng_anh,
+                    term_vn: newData.ten_tieng_viet,
+                    topic: newData.chu_de || "Arithmetic",
+                    latex: newData.vi_du.ki_hieu,
+                    read_en: newData.vi_du.doc_tieng_anh,
+                    read_vn: newData.vi_du.doc_tieng_viet
+                });
+                renderVocab();
+                toggleAddVocabModal();
+                alert("Thêm từ vựng thành công!");
+            } catch (error) {
+                alert("Lỗi cú pháp JSON: \n" + error.message);
+            }
+        }
+
+        // ĐÃ THAY THẾ HÀM LƯU FILE CŨ BẰNG HÀM MỚI Ở ĐÂY
+        async function exportVocab() {
+            if (vocabData.length === 0) {
+                alert("Chưa có từ vựng nào để xuất file!");
+                return;
+            }
+
+            const dataStr = JSON.stringify(vocabData, null, 4);
+
+            // Cách 1: Sử dụng File System Access API
+            if ('showSaveFilePicker' in window) {
+                try {
+                    const handle = await window.showSaveFilePicker({
+                        suggestedName: 'mathematics_vocabulary.json',
+                        types: [{
+                            description: 'File JSON',
+                            accept: { 'application/json': ['.json'] }
+                        }]
+                    });
+                    const writable = await handle.createWritable();
+                    await writable.write(dataStr);
+                    await writable.close();
+                    return;
+                } catch (err) {
+                    if (err.name === 'AbortError') return;
+                    console.warn("Lỗi File System Access API, chuyển sang phương pháp dự phòng:", err);
+                }
+            }
+
+            // Cách 2: Phương pháp dự phòng
+            let fileName = prompt("Nhập tên file bạn muốn lưu:", "mathematics_vocabulary.json");
+            if (!fileName) return; 
+
+            if (!fileName.toLowerCase().endsWith('.json')) {
+                fileName += '.json';
+            }
+
+            const blob = new Blob([dataStr], { type: "application/json" });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement("a");
+            link.href = url;
+            link.download = fileName;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            URL.revokeObjectURL(url);
+        }
+
+        function importVocab(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const importedData = JSON.parse(e.target.result);
+                    if (!Array.isArray(importedData)) throw new Error("File không đúng định dạng. Dữ liệu phải là một mảng JSON.");
+                    
+                    vocabData = [...importedData, ...vocabData];
+                    renderVocab();
+                    alert(`Nhập file thành công! Đã tải thêm ${importedData.length} từ vựng.`);
+                } catch (error) {
+                    alert("Lỗi khi đọc file: \n" + error.message);
+                }
+                event.target.value = '';
+            };
+            reader.readAsText(file);
+        }
+
+        // --- PRACTICE TAB LOGIC ---
+        let currentQuizData = null;
+        let timerInterval = null;
+        let sessionData = {
+            active: false,
+            timeLimit: 0,
+            timeRemaining: 0,
+            startTime: 0
+        };
+
+        function toggleJsonFormatInfo() {
+            const info = document.getElementById('json-format-info');
+            info.classList.toggle('hidden');
+        }
+
+        function loadQuizFile(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const parsedData = JSON.parse(e.target.result);
+                    
+                    if (!parsedData.chu_de || typeof parsedData.thoi_gian === 'undefined' || !parsedData.cau_hoi || !Array.isArray(parsedData.cau_hoi)) {
+                        throw new Error("Cấu trúc file JSON không hợp lệ. Vui lòng kiểm tra lại cấu trúc mẫu.");
+                    }
+
+                    currentQuizData = parsedData;
+                    
+                    const infoDiv = document.getElementById('quiz-info');
+                    infoDiv.classList.remove('hidden');
+                    infoDiv.innerHTML = `
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-center">
+                            <div class="p-2">
+                                <span class="block text-xs text-blue-400 font-bold uppercase mb-1">Chủ đề</span>
+                                <strong class="text-base font-extrabold text-white">${currentQuizData.chu_de}</strong>
+                            </div>
+                            <div class="p-2 border-t md:border-t-0 md:border-l border-slate-800">
+                                <span class="block text-xs text-cyan-400 font-bold uppercase mb-1">Thời gian</span>
+                                <strong class="text-base font-extrabold text-white">${currentQuizData.thoi_gian > 0 ? currentQuizData.thoi_gian + ' phút' : 'Không giới hạn'}</strong>
+                            </div>
+                            <div class="p-2 border-t md:border-t-0 md:border-l border-slate-800">
+                                <span class="block text-xs text-emerald-400 font-bold uppercase mb-1">Số câu hỏi</span>
+                                <strong class="text-base font-extrabold text-white">${currentQuizData.so_cau_hoi || currentQuizData.cau_hoi.length} câu</strong>
+                            </div>
+                        </div>
+                    `;
+
+                    const startBtn = document.getElementById('btn-start-quiz');
+                    startBtn.classList.remove('hidden');
+                    startBtn.classList.add('flex');
+
+                } catch (error) {
+                    alert("Lỗi đọc file: \n" + error.message);
+                }
+                event.target.value = '';
+            };
+            reader.readAsText(file);
+        }
+
+        function startPractice() {
+            if (!currentQuizData) return;
+
+            document.getElementById('practice-config').classList.add('hidden');
+            document.getElementById('problem-area').classList.remove('hidden');
+            document.getElementById('quiz-topic-badge').innerText = currentQuizData.chu_de;
+
+            const container = document.getElementById('quiz-questions-container');
+            container.innerHTML = '';
+            currentQuizData.cau_hoi.forEach((q, index) => {
+                container.innerHTML += `
+                    <div class="glass-panel p-5 rounded-2xl border border-slate-800/80">
+                        <div class="flex justify-between items-start mb-3 gap-3">
+                            <h4 class="text-base font-bold text-slate-100 flex items-start gap-2">
+                                <span class="text-blue-400 font-extrabold">Câu ${index + 1}:</span> 
+                                <span class="font-medium text-slate-200">${q.cau_hoi}</span>
+                            </h4>
+                            <button type="button" onclick="speakText('${q.cau_hoi.replace(/'/g, "\\'")}')" class="text-xs text-blue-400 hover:text-blue-300 bg-blue-500/10 border border-blue-500/20 px-3 py-1.5 rounded-xl transition-all flex items-center gap-1.5 shrink-0" title="Nghe câu hỏi">
+                                <i class="fa-solid fa-volume-high"></i> Nghe
+                            </button>
+                        </div>
+                        <input type="number" step="any" id="ans-${index}" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-3.5 text-lg font-mono text-cyan-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all placeholder:text-slate-600" placeholder="Nhập đáp án số của bạn..." required>
+                    </div>
+                `;
+            });
+
+            const limitInSeconds = (currentQuizData.thoi_gian || 0) * 60;
+            sessionData = {
+                active: true,
+                timeLimit: limitInSeconds,
+                timeRemaining: limitInSeconds,
+                startTime: Date.now()
+            };
+
+            if (timerInterval) clearInterval(timerInterval);
+            timerInterval = setInterval(updateTimer, 1000);
+            updateTimer();
+        }
+
+        function updateTimer() {
+            if (!sessionData.active) return;
+            
+            const timerEl = document.getElementById('prob-timer');
+            
+            if (sessionData.timeLimit > 0) {
+                sessionData.timeRemaining--;
+                if (sessionData.timeRemaining <= 0) {
+                    processSubmission(true);
+                    return;
+                }
+                const m = String(Math.floor(sessionData.timeRemaining / 60)).padStart(2, '0');
+                const s = String(sessionData.timeRemaining % 60).padStart(2, '0');
+                timerEl.innerHTML = `<i class="fa-regular fa-clock"></i> ${m}:${s}`;
+                
+                if(sessionData.timeRemaining <= 30) {
+                    timerEl.classList.add('text-red-400', 'border-red-500/50', 'animate-pulse');
+                    timerEl.classList.remove('text-cyan-400', 'border-slate-800');
+                } else {
+                    timerEl.classList.remove('text-red-400', 'border-red-500/50', 'animate-pulse');
+                    timerEl.classList.add('text-cyan-400', 'border-slate-800');
+                }
+            } else {
+                const diff = Math.floor((Date.now() - sessionData.startTime) / 1000);
+                const m = String(Math.floor(diff / 60)).padStart(2, '0');
+                const s = String(diff % 60).padStart(2, '0');
+                timerEl.innerHTML = `<i class="fa-regular fa-clock"></i> ${m}:${s}`;
+            }
+        }
+
+        function submitQuiz(e) {
+            if(e) e.preventDefault();
+            processSubmission(false);
+        }
+
+        function processSubmission(isTimeout) {
+            sessionData.active = false;
+            clearInterval(timerInterval);
+
+            document.getElementById('problem-area').classList.add('hidden');
+            document.getElementById('feedback-area').classList.remove('hidden');
+
+            let correctCount = 0;
+            let gradedHTML = '';
+            
+            currentQuizData.cau_hoi.forEach((q, index) => {
+                const inputEl = document.getElementById(`ans-${index}`);
+                const userAnsStr = inputEl ? inputEl.value : '';
+                const userAns = parseFloat(userAnsStr);
+                const isCorrect = userAnsStr !== '' && Math.abs(userAns - parseFloat(q.ket_qua)) < 0.01;
+                
+                if (isCorrect) correctCount++;
+
+                const statusIcon = isCorrect 
+                    ? '<i class="fa-solid fa-circle-check text-emerald-400 text-xl"></i>' 
+                    : '<i class="fa-solid fa-circle-xmark text-red-400 text-xl"></i>';
+                
+                const correctInfo = isCorrect 
+                    ? '' 
+                    : `<div class="mt-2.5 text-xs bg-red-500/10 text-red-300 px-3.5 py-2 rounded-xl font-mono font-bold border border-red-500/20">ĐÁP ÁN ĐÚNG: ${q.ket_qua}</div>`;
+                
+                const cardBorder = isCorrect 
+                    ? 'border-emerald-500/30 bg-emerald-950/10' 
+                    : 'border-red-500/30 bg-red-950/10';
+
+                gradedHTML += `
+                    <div class="p-5 border rounded-2xl ${cardBorder} space-y-2">
+                        <p class="font-bold text-slate-100 text-sm">Câu ${index + 1}: <span class="font-normal text-slate-300">${q.cau_hoi}</span></p>
+                        <div class="flex items-center gap-3">
+                            <span class="text-xs text-slate-400">Đáp án của bạn:</span>
+                            <span class="font-mono font-bold text-base ${userAnsStr === '' ? 'text-slate-500 italic' : 'text-cyan-300'}">${userAnsStr !== '' ? userAnsStr : '(Bỏ trống)'}</span>
+                            ${statusIcon}
+                        </div>
+                        ${correctInfo}
+                    </div>
+                `;
+            });
+
+            document.getElementById('graded-questions-container').innerHTML = gradedHTML;
+
+            const totalTimeInSeconds = Math.floor((Date.now() - sessionData.startTime) / 1000);
+            const m = Math.floor(totalTimeInSeconds / 60);
+            const s = totalTimeInSeconds % 60;
+            const timeStr = m > 0 ? `${m} phút ${s} giây` : `${s} giây`;
+            const totalQ = currentQuizData.cau_hoi.length;
+            const accuracy = totalQ > 0 ? Math.round((correctCount / totalQ) * 100) : 0;
+            
+            const statsHTML = `
+                <div class="overflow-hidden border border-slate-800 rounded-2xl">
+                    <table class="w-full text-left bg-slate-950/80">
+                        <tbody class="divide-y divide-slate-800 text-sm">
+                            ${isTimeout ? `
+                            <tr class="bg-amber-500/10">
+                                <th class="p-4 text-amber-400 font-bold"><i class="fa-solid fa-triangle-exclamation mr-2"></i>Trạng thái</th>
+                                <td class="p-4 font-bold text-amber-300">Hết thời gian làm bài!</td>
+                            </tr>` : ''}
+                            <tr class="hover:bg-slate-900/50">
+                                <th class="p-4 text-slate-400 font-medium w-1/2">Chủ đề bài làm</th>
+                                <td class="p-4 font-bold text-slate-100">${currentQuizData.chu_de}</td>
+                            </tr>
+                            <tr class="hover:bg-slate-900/50">
+                                <th class="p-4 text-slate-400 font-medium">Số câu đúng</th>
+                                <td class="p-4 font-extrabold text-base text-blue-400">${correctCount} / ${totalQ}</td>
+                            </tr>
+                            <tr class="hover:bg-slate-900/50">
+                                <th class="p-4 text-slate-400 font-medium">Tỷ lệ chính xác</th>
+                                <td class="p-4 font-extrabold text-base ${accuracy >= 80 ? 'text-emerald-400' : accuracy >= 50 ? 'text-amber-400' : 'text-red-400'}">${accuracy}%</td>
+                            </tr>
+                            <tr class="hover:bg-slate-900/50">
+                                <th class="p-4 text-slate-400 font-medium">Thời gian hoàn thành</th>
+                                <td class="p-4 font-medium text-slate-200">${timeStr}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            `;
+            document.getElementById('stats-table-container').innerHTML = statsHTML;
+        }
+
+        function resetPractice() {
+            document.getElementById('feedback-area').classList.add('hidden');
+            document.getElementById('practice-config').classList.remove('hidden');
+            
+            document.getElementById('btn-start-quiz').classList.add('hidden');
+            document.getElementById('quiz-info').classList.add('hidden');
+            currentQuizData = null;
+        }
+
+        window.onload = () => {
+            if (window.innerWidth < 768) {
+                document.getElementById('sidebar').classList.add('-translate-x-full');
+            }
+            renderVocab();
+        };
+    </script>
+</body>
+</html>
